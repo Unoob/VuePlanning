@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VuePlanning", "VuePlanning\VuePlanning.csproj", "{71FE6248-B46E-4702-8C5B-A315B681FFE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71FE6248-B46E-4702-8C5B-A315B681FFE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71FE6248-B46E-4702-8C5B-A315B681FFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71FE6248-B46E-4702-8C5B-A315B681FFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71FE6248-B46E-4702-8C5B-A315B681FFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {799883B1-3A25-45E0-B17B-1068AC30BEAB}
+	EndGlobalSection
+EndGlobal
