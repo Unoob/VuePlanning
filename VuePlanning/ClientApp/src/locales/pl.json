@@ -1,3 +1,9 @@
 {
-  "message": "hello i18n !!"
+  "message": "hello i18n !!",
+  "login": {
+    "name": "Nazwa",
+    "room": "Kod pokoju",
+    "confirm": "Dołącz",
+    "create": "Stwórz"
+  }
 }
