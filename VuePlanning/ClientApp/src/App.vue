@@ -7,15 +7,8 @@
 </template>
 
 <script>
-
+  import './services/HubService'
 export default {
-  name: "App",
-
-  components: {
-  },
-
-  data: () => ({
-    //
-  })
+  name: "App"
 };
 </script>

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
+using VuePlanning.Hubs;
 
 namespace VuePlanning
 {
@@ -21,7 +22,12 @@ namespace VuePlanning
         {
 
             services.AddControllersWithViews();
+            services.AddSignalR(hubOptions => {
+                hubOptions.EnableDetailedErrors = true;
+                //hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(3);
+            });
 
+            services.AddSingleton<IRoomTracker, InMemoryRoomTracker>();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -51,6 +57,7 @@ namespace VuePlanning
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<PlanningHub>("/planningHub");
             });
 
             app.UseSpa(spa =>
