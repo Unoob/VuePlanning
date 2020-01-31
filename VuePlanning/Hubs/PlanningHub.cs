@@ -8,9 +8,12 @@ namespace VuePlanning.Hubs
 {
     public interface IPlanningHub
     {
-        Task SendMessage(string message);
+        Task RoomCreated(Room room);
         Task UserJoin(User user);
+        Task UserVote(User user);
         Task SetStatus(bool status);
+        Task UserUpdate(User user);
+        Task SendMessage(string msg);
     }
     public class PlanningHub : HubWithPresence<IPlanningHub>
     {
@@ -18,13 +21,51 @@ namespace VuePlanning.Hubs
         {
         }
 
-        public async Task CreateRoom(LoginModel model) {
-            var roomNoExist = _rooms.GetRoom(model.Room) == null;
-            if (roomNoExist) { 
-                _rooms.CreateRoom(model.Room, new User { ConnectionId = Context.ConnectionId, Name = model.Name });
+        public async Task JoinRoom(User user)
+        {
+            if (user == null) return;
+
+            user.ConnectionId = Context.ConnectionId;
+            var room = _rooms.GetRoom(user.RoomId);
+            
+            await Clients.Caller.UserUpdate(user);
+            await Groups.AddToGroupAsync(user.ConnectionId, room.Id);
+            if (room.UserJoin(user) && room.HasHost)
+            {
+                await Clients.Client(room.Host.ConnectionId).UserJoin(user);
             }
-            await Clients.Caller.SetStatus(roomNoExist);
+            await Clients.Caller.SendMessage(room.Message);
         }
+        public async Task CreateRoom(User host)
+        {
+            if (host == null) return;
+            host.ConnectionId = Context.ConnectionId;
+            var room = _rooms.GetRoom(host.RoomId);
+            room.Host = host;
+
+            await Groups.AddToGroupAsync(host.ConnectionId, room.Id);
+            await Clients.Caller.UserUpdate(host);
+            await Clients.Caller.RoomCreated(room);
+        }
+
+        public async Task CardSelect(User user)
+        {
+            if (user == null) return;
+            var room = _rooms.GetRoom(user.RoomId);
+            room.UpdateUser(user);
+            if (room.HasHost)
+            {
+                await Clients.Client(room.Host.ConnectionId).UserVote(user);
+            }
+        }
+
+        public async Task SendMessage(string roomId, string msg)
+        {
+            var room = _rooms.GetRoom(roomId);
+            room.Message = msg;
+            await Clients.Group(roomId).SendMessage(msg);
+        }
+
         //public override async Task OnDisconnectedAsync(Exception exception)
         //{
         //    await base.OnDisconnectedAsync(exception);

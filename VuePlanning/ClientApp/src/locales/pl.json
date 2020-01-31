@@ -5,5 +5,8 @@
     "room": "Kod pokoju",
     "confirm": "Dołącz",
     "create": "Stwórz"
+  },
+  "room": {
+    "task": "Treść zadania"
   }
 }

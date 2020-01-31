@@ -11,7 +11,7 @@ namespace VuePlanning.Hubs
     {
         Room GetRoom(string id);
         string GetUserConnectionId(string name);
-        void CreateRoom(string room, User user);
+        Room CreateRoom(string room);
         void OnConnect(string connectionId, string name);
     }
 
@@ -20,13 +20,14 @@ namespace VuePlanning.Hubs
         private readonly ConcurrentDictionary<string, Room> _rooms = new ConcurrentDictionary<string, Room>();
         private readonly ConcurrentDictionary<string, string> _users = new ConcurrentDictionary<string, string>();
 
-        public void CreateRoom(string room, User user)
+        public Room CreateRoom(string roomId)
         {
-            _rooms.TryAdd(room, new Room
+            var room = new Room
             {
-                Id = room,
-                Host = user
-            });
+                Id = roomId
+            };
+            _rooms.TryAdd(roomId, room);
+            return room;
         }
 
         public Room GetRoom(string id)
@@ -35,7 +36,7 @@ namespace VuePlanning.Hubs
             {
                 return room;
             }
-            return null;
+            return CreateRoom(id);
         }
 
         public string GetUserConnectionId(string name)

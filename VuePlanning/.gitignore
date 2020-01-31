@@ -23,10 +23,10 @@ bin/
 Bin/
 obj/
 Obj/
+wwwroot/
 
 # Visual Studio 2015 cache/options directory
 .vs/
-/wwwroot/dist/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

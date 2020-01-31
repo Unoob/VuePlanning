@@ -1,5 +1,5 @@
 module.exports = {
-  outputDir: "../wwwroot/dist",
+  outputDir: "../wwwroot",
   transpileDependencies: ["vuetify"],
 
   pluginOptions: {

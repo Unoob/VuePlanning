@@ -1,10 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 import Login from "../views/Login.vue";
+import MasterView from "@/views/MasterView.vue"
 
 Vue.use(VueRouter);
 function load(name) {
-  return () => import(/* webpackChunkName: "v-[request]" */`../views/${name}.vue`);
+  return () => import(/* webpackChunkName: "v-[request]" */ `../views/${name}.vue`);
 }
 const routes = [
   {
@@ -13,9 +15,13 @@ const routes = [
     component: Login
   },
   {
-    path: "/room",
-    name: "room",
-    component: load("Room")
+    path: "/", name: "layout", component: MasterView, children: [
+      {
+        path: "room",
+        name: "room",
+        component: load("Room")
+      }
+    ]
   },
   { path: "*", redirect: "login" }
   //{
@@ -31,6 +37,14 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (store.state.user || to.name === "login") {
+    next();
+  } else {
+    next("/login");
+  }
 });
 
 export default router;

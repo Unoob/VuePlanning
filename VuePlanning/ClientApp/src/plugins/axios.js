@@ -28,9 +28,12 @@ _axios.interceptors.request.use(
 
 // Add a response interceptor
 _axios.interceptors.response.use(
-  response =>
-    // Do something with response data
-    response,
+  response => {
+    if (response.status === 200) {
+      return response.data;
+    }
+    return response;
+  },
   error =>
     // Do something with response error
     Promise.reject(error),
