@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
 import Login from "../views/Login.vue";
-import MasterView from "@/views/MasterView.vue"
+import MasterView from "@/views/MasterView.vue";
 
 Vue.use(VueRouter);
 function load(name) {
@@ -15,7 +15,10 @@ const routes = [
     component: Login
   },
   {
-    path: "/", name: "layout", component: MasterView, children: [
+    path: "/",
+    name: "layout",
+    component: MasterView,
+    children: [
       {
         path: "room",
         name: "room",

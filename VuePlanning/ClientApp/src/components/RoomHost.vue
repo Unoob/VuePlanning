@@ -1,12 +1,14 @@
 ﻿<template>
   <v-container>
     <v-row>
-      <v-col cols="10">
+      <v-col cols="12">
         <v-text-field v-model="message" clearable :label="$t('room.task')"></v-text-field>
       </v-col>
-      <v-col cols="2">
-        <v-btn @click="Send" color="primary" block>{{$t('room.send')}}</v-btn>
-        <v-btn color="success" block>{{$t('room.check')}}</v-btn>
+      <v-col cols="12" class="text-center">
+        <v-row justify="space-around">
+          <v-btn @click="Send" color="primary">{{ $t("room.send") }}</v-btn>
+          <v-btn color="success">{{ $t("room.check") }}</v-btn>
+        </v-row>
       </v-col>
     </v-row>
     <v-row>
@@ -26,7 +28,7 @@ export default {
     this.CreateRoom();
   },
   data() {
-    return {message:""};
+    return { message: "" };
   },
   computed: mapState({
     users: state => state.room.users

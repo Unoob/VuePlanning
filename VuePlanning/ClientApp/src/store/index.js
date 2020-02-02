@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { CreateRoom, JoinRoom, CardSelect, SendMessage } from "@/services/HubService";
+import { CreateRoom, JoinRoom, CardSelect, SendMessage, Disconnect } from "@/services/HubService";
 
 Vue.use(Vuex);
 
@@ -23,7 +23,7 @@ let store = new Vuex.Store({
       state.room.message = message;
     },
     SET_USER_VOTE(state, vote) {
-      state.user.vote = vote;
+      state.user.vote = vote + '';
     },
     UPDATE_ROOM(state, { users }) {
       state.room.users = users;
@@ -33,7 +33,15 @@ let store = new Vuex.Store({
       state.room.host = user;
     },
     USER_JOIN(state, user) {
-      state.room.users.push(user);
+      var match = state.room.users.find(f => f.name === user.name);
+      if (match) {
+        match.connectionId = user.connectionId;
+      } else {
+        state.room.users.push(user);
+      }
+    },
+    USER_LEAVES(state, user) {
+      state.room.users = state.room.users.filter(u => u.connectionId != user.connectionId);
     },
     UPDATE_USER_VOTE(state, { connectionId, vote }) {
       let user = state.room.users.find(f => f.connectionId === connectionId);
@@ -55,9 +63,13 @@ let store = new Vuex.Store({
     },
     UpdateRoom({ commit }, room) {
       commit("UPDATE_ROOM", room);
+      commit("SET_MESSAGE", message);
     },
     UserJoin({ commit }, user) {
       commit("USER_JOIN", user);
+    },
+    UserLeaves({ commit }, user) {
+      commit("USER_LEAVES", user);
     },
     UserVote({ commit }, { connectionId, vote }) {
       commit("UPDATE_USER_VOTE", { connectionId, vote });
@@ -71,6 +83,10 @@ let store = new Vuex.Store({
     CardSelect({ commit, state }, vote) {
       commit("SET_USER_VOTE", vote);
       CardSelect(state.user);
+    },
+    LeaveRoom({ state, commit }) {
+      Disconnect(state.user);
+      commit("SET_USER", null);
     }
   },
   modules: {}

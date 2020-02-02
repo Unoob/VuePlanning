@@ -23,11 +23,10 @@ namespace VuePlanning.Models
             result.Vote = user.Vote;
         }
 
-        internal bool UserJoin(User user)
+        internal void UserJoin(User user)
         {
             var userExist = Users.Find(w => w.Name == user.Name);
-            var userJoin = userExist == null;
-            if (userJoin)
+            if (userExist == null)
             {
                 Users.Add(user);
             }
@@ -35,7 +34,18 @@ namespace VuePlanning.Models
             {
                 userExist.ConnectionId = user.ConnectionId;
             }
-            return userJoin;
+        }
+
+        internal void UserLeaves(User user)
+        {
+            if (user.IsHost)
+            {
+                Host = new User();
+            }
+            else
+            {
+                Users.Remove(user);
+            }
         }
     }
 }

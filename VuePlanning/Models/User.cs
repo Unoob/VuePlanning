@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public bool IsHost { get; set; }
         public string RoomId { get; set; }
-        public double Vote { get; set; }
+        public string Vote { get; set; }
     }
 }

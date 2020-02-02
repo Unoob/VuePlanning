@@ -9,6 +9,7 @@ const connection = new HubConnectionBuilder()
 connection.on("UserUpdate", UserUpdate);
 connection.on("UserJoin", UserJoin);
 connection.on("UserVote", UserVote);
+connection.on("UserLeaves", UserLeaves);
 connection.on("RoomCreated", RoomCreated);
 connection.on("SendMessage", SetMessage);
 
@@ -41,6 +42,10 @@ function UserJoin(user) {
   store.dispatch("UserJoin", user);
 }
 
+function UserLeaves(user) {
+  store.dispatch("UserLeaves", user);
+}
+
 function UserVote(user) {
   store.dispatch("UserVote", user);
 }
@@ -57,4 +62,8 @@ export function CardSelect(user) {
 }
 export function CreateRoom(user) {
   connection.invoke("CreateRoom", user);
+}
+
+export function Disconnect(user) {
+  connection.invoke("Disconnect", user);
 }

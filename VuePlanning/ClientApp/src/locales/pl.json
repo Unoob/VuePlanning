@@ -1,5 +1,5 @@
 {
-  "message": "hello i18n !!",
+  "toolbarTitle": "Planowanie",
   "login": {
     "name": "Nazwa",
     "room": "Kod pokoju",
@@ -7,6 +7,8 @@
     "create": "Stwórz"
   },
   "room": {
-    "task": "Treść zadania"
+    "task": "Treść zadania",
+    "send": "Wyślij",
+    "check": "Sprawdź"
   }
 }
