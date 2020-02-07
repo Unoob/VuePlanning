@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Collections.Generic;
 
 namespace VuePlanning.Models
 {
+    [MessagePackObject]
     public class Room
     {
         public Room()
@@ -10,12 +12,15 @@ namespace VuePlanning.Models
             Users = new List<User>();
             Host = new User();
         }
-
+        [Key("Id")]
         public string Id { get; set; }
+        [Key("message")]
         public string Message { get; set; }
+        [Key("host")]
         public User Host { get; set; }
+        [Key("users")]
         public List<User> Users { get; }
-
+        [IgnoreMember]
         public bool HasHost => Host.ConnectionId != null;
         internal void UpdateUser(User user)
         {

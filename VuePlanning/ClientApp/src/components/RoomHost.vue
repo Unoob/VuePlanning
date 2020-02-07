@@ -24,7 +24,8 @@
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Host",
-  mounted: function() {
+    mounted: function () {
+      console.log('host mounted')
     this.CreateRoom();
   },
   data() {

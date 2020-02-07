@@ -23,7 +23,7 @@ let store = new Vuex.Store({
       state.room.message = message;
     },
     SET_USER_VOTE(state, vote) {
-      state.user.vote = vote + '';
+      state.user.vote = vote + "";
     },
     UPDATE_ROOM(state, { users }) {
       state.room.users = users;
@@ -63,7 +63,7 @@ let store = new Vuex.Store({
     },
     UpdateRoom({ commit }, room) {
       commit("UPDATE_ROOM", room);
-      commit("SET_MESSAGE", message);
+      commit("SET_MESSAGE", room.message);
     },
     UserJoin({ commit }, user) {
       commit("USER_JOIN", user);

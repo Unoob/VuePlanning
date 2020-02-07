@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using VueCliMiddleware;
 using VuePlanning.Hubs;
 
@@ -24,14 +25,19 @@ namespace VuePlanning
 
             //services.AddControllersWithViews();
 
-            services.AddSignalR(hubOptions => {
+            services.AddSignalR(hubOptions =>
+            {
                 hubOptions.EnableDetailedErrors = true;
                 //hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(3);
+            }).AddMessagePackProtocol(options =>
+            {
+                options.FormatterResolvers = new List<MessagePack.IFormatterResolver>()
+                    {
+                        MessagePack.Resolvers.StandardResolver.Instance
+                    };
             });
 
-
             services.AddSingleton<IRoomTracker, InMemoryRoomTracker>();
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "wwwroot";
@@ -58,9 +64,6 @@ namespace VuePlanning
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapHub<PlanningHub>("/planningHub");
                 endpoints.MapToVueCliProxy("{*path}",
                     new SpaOptions { SourcePath = "ClientApp" },
@@ -68,17 +71,6 @@ namespace VuePlanning
                     //regex: "Compiled successfully",
                     forceKill: true);
             });
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseVueCli(npmScript: "serve", port: 8080);
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-            //    }
-            //});
         }
     }
 }

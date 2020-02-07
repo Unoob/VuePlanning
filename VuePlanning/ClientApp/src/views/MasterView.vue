@@ -14,12 +14,21 @@
   </v-content>
 </template>
 <script>
+import { onFocus, start } from "@/services/HubService";
 import { mapActions } from "vuex";
 export default {
-  name: "MasterView",
-  mounted: function() {
+    name: "MasterView",
+    beforeRouteEnter: function (to, from, next) {
+      console.log('mv before route enter')
+      start().then(() =>
+        next()
+      );
+    },
+    beforeCreated: function () { console.log('mv before'); start(); },
+    mounted: function () {
+      console.log('mv mounted')
     this.$nextTick(() => {
-      //window.addEventListener('focus', () => alert('ny'))
+      window.addEventListener("focus", onFocus);
     });
   },
   methods: {
