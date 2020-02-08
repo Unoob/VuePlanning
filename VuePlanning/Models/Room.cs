@@ -24,8 +24,9 @@ namespace VuePlanning.Models
         public bool HasHost => Host.ConnectionId != null;
         internal void UpdateUser(User user)
         {
-            var result = Users.Find(w => w.ConnectionId == user.ConnectionId);
-            result.Vote = user.Vote;
+            var userUpdate = Users.Find(w => w.ConnectionId == user.ConnectionId);
+            if (userUpdate == null) return;
+            userUpdate.Vote = user.Vote;
         }
 
         internal void UserJoin(User user)
@@ -49,7 +50,9 @@ namespace VuePlanning.Models
             }
             else
             {
-                Users.Remove(user);
+                var userRemove = Users.Find(w => w.ConnectionId == user.ConnectionId);
+                if (userRemove == null) return;
+                Users.Remove(userRemove);
             }
         }
     }

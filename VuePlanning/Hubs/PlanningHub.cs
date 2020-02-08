@@ -79,14 +79,15 @@ namespace VuePlanning.Hubs
                 await Clients.Client(room.Host.ConnectionId).UserLeaves(user);
             }
         }
-        //public override async Task OnDisconnectedAsync(Exception exception)
-        //{
-        //    await base.OnDisconnectedAsync(exception);
-        //}
 
-        //public override async Task OnConnectedAsync()
-        //{
-        //    await base.OnConnectedAsync();
-        //}
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+        }
     }
 }

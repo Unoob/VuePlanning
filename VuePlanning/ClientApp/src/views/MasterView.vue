@@ -1,7 +1,7 @@
 ﻿<template>
   <v-content>
     <v-toolbar color="primary" dark>
-      <v-toolbar-title> {{ $t("toolbarTitle") }}:{{ user.roomId }} </v-toolbar-title>
+      <v-toolbar-title> {{ $t("toolbarTitle") }}: {{ user.roomId }} </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon color="pink accent-3">
         <v-icon>fas fa-heart</v-icon>
@@ -20,10 +20,6 @@ export default {
     console.log("mv before route enter");
     start().then(() => next());
   },
-  beforeCreated: function() {
-    console.log("mv before");
-    start();
-  },
   mounted: function() {
     console.log("mv mounted");
     this.$nextTick(() => {
@@ -38,8 +34,8 @@ export default {
       this.$router.push({ name: "login" });
     }
   },
-    destroyed: function () {
-      window.removeEventListener("focus", onFocus);
+  destroyed: function() {
+    window.removeEventListener("focus", onFocus);
   }
 };
 </script>

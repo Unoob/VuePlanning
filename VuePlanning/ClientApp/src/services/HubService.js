@@ -25,21 +25,18 @@ export async function start() {
   }
 }
 
-//start();
-
 //connection.onclose(async () => {
 //  await start();
 //});
 
 export function onFocus() {
   if (connection.state !== HubConnectionState.Disconnected) return;
-  console.log("onFocus state", connection.state);
   start().then(() => {
     const user = store.state.user;
     if (user.isHost) {
       connection.invoke("CreateRoom", user);
     } else {
-      store.dispatch("UserJoin", user);
+      store.dispatch("JoinRoom", user);
     }
   });
 }

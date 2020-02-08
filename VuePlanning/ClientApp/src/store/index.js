@@ -21,6 +21,7 @@ let store = new Vuex.Store({
     },
     SET_MESSAGE(state, message) {
       state.room.message = message;
+      state.user.vote = null;
     },
     SET_USER_VOTE(state, vote) {
       state.user.vote = vote + "";
@@ -50,14 +51,18 @@ let store = new Vuex.Store({
       let user = state.room.users.find(f => f.connectionId === connectionId);
       if (!user) return;
       user.vote = vote;
+    },
+    RESET_VOTES(state) {
+      state.room.users.forEach(u => (u.vote = null));
     }
   },
   actions: {
     SetMessage({ commit }, message) {
       commit("SET_MESSAGE", message);
     },
-    SendMessage({ state }, message) {
+    SendMessage({ commit, state }, message) {
       SendMessage(state.room.id, message);
+      commit("RESET_VOTES");
     },
     UserUpdate({ commit }, user) {
       if (user.isHost) {
