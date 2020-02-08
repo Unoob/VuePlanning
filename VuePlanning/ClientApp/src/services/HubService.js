@@ -1,5 +1,5 @@
 ﻿import { HubConnectionBuilder, LogLevel, HubConnectionState } from "@microsoft/signalr";
-import { MessagePackHubProtocol } from '@microsoft/signalr-protocol-msgpack'
+import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 import store from "@/store/index";
 
 const connection = new HubConnectionBuilder()
@@ -36,12 +36,12 @@ export function onFocus() {
   console.log("onFocus state", connection.state);
   start().then(() => {
     const user = store.state.user;
-    if (user) {
+    if (user.isHost) {
       connection.invoke("CreateRoom", user);
     } else {
       store.dispatch("UserJoin", user);
     }
-  });  
+  });
 }
 
 function UserUpdate(user) {
@@ -56,7 +56,7 @@ function SetMessage(msg) {
 }
 
 function UserJoin(user) {
-  console.log("UserJoin",user)
+  console.log("UserJoin", user);
   store.dispatch("UserJoin", user);
 }
 
@@ -79,7 +79,9 @@ export function CardSelect(user) {
   connection.invoke("CardSelect", user);
 }
 export function CreateRoom(user) {
-  connection.invoke("CreateRoom", user).catch(e => { console.log("CreateRoom error",e) });
+  connection.invoke("CreateRoom", user).catch(e => {
+    console.log("CreateRoom error", e);
+  });
 }
 
 export function Disconnect(user) {

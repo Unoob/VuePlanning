@@ -9,6 +9,7 @@
   "room": {
     "task": "Treść zadania",
     "send": "Wyślij",
-    "check": "Sprawdź"
+    "check": "Sprawdź",
+    "remove": "Usuń"
   }
 }

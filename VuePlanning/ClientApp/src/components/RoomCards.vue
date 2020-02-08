@@ -17,8 +17,8 @@
 import { mapActions, mapState } from "vuex";
 export default {
   name: "Cards",
-    mounted: function () {
-      console.log('card mounted')
+  mounted: function() {
+    console.log("card mounted");
     this.JoinRoom();
   },
   data() {

@@ -1,9 +1,7 @@
 ﻿<template>
   <v-content>
     <v-toolbar color="primary" dark>
-      <v-toolbar-title>
-        {{ $t("toolbarTitle") }}
-      </v-toolbar-title>
+      <v-toolbar-title> {{ $t("toolbarTitle") }}:{{ user.roomId }} </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon color="pink accent-3">
         <v-icon>fas fa-heart</v-icon>
@@ -15,28 +13,33 @@
 </template>
 <script>
 import { onFocus, start } from "@/services/HubService";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
-    name: "MasterView",
-    beforeRouteEnter: function (to, from, next) {
-      console.log('mv before route enter')
-      start().then(() =>
-        next()
-      );
-    },
-    beforeCreated: function () { console.log('mv before'); start(); },
-    mounted: function () {
-      console.log('mv mounted')
+  name: "MasterView",
+  beforeRouteEnter: function(to, from, next) {
+    console.log("mv before route enter");
+    start().then(() => next());
+  },
+  beforeCreated: function() {
+    console.log("mv before");
+    start();
+  },
+  mounted: function() {
+    console.log("mv mounted");
     this.$nextTick(() => {
       window.addEventListener("focus", onFocus);
     });
   },
+  computed: mapState(["user"]),
   methods: {
     ...mapActions(["LeaveRoom"]),
     SignOut() {
       this.LeaveRoom();
       this.$router.push({ name: "login" });
     }
+  },
+    destroyed: function () {
+      window.removeEventListener("focus", onFocus);
   }
 };
 </script>

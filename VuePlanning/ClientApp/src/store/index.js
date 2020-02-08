@@ -26,6 +26,7 @@ let store = new Vuex.Store({
       state.user.vote = vote + "";
     },
     UPDATE_ROOM(state, { users }) {
+      users.forEach(u => (u.avatar = `https://api.adorable.io/avatars/86/${u.connectionId}.png`));
       state.room.users = users;
     },
     SET_HOST(state, user) {
@@ -36,7 +37,9 @@ let store = new Vuex.Store({
       var match = state.room.users.find(f => f.name === user.name);
       if (match) {
         match.connectionId = user.connectionId;
+        match.avatar = `https://api.adorable.io/avatars/86/${user.connectionId}.png`;
       } else {
+        user.avatar = `https://api.adorable.io/avatars/86/${user.connectionId}.png`;
         state.room.users.push(user);
       }
     },
@@ -45,6 +48,7 @@ let store = new Vuex.Store({
     },
     UPDATE_USER_VOTE(state, { connectionId, vote }) {
       let user = state.room.users.find(f => f.connectionId === connectionId);
+      if (!user) return;
       user.vote = vote;
     }
   },
@@ -87,6 +91,10 @@ let store = new Vuex.Store({
     LeaveRoom({ state, commit }) {
       Disconnect(state.user);
       commit("SET_USER", null);
+    },
+    RemoveUser({ commit }, user) {
+      Disconnect(user);
+      commit("USER_LEAVES", user);
     }
   },
   modules: {}
