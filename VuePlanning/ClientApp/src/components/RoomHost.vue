@@ -52,7 +52,7 @@
                       <v-img :src="user.avatar"></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="12" class="headline" :style="{ color: user.vote ? '' : 'gold' }">
+                  <v-col cols="12" class="headline font-weight-bold" :style="{ color: user.vote ? '' : 'gold' }">
                     {{ user.name }}
                   </v-col>
                 </v-row>
@@ -62,7 +62,7 @@
           <v-scroll-x-transition>
             <v-container v-if="show" class="fill-height justify-center">
               <v-row>
-                <v-col class="display-3 text-center font-weight-bold">
+                <v-col class="display-4 text-center font-weight-bold">
                   {{ user.vote }}
                 </v-col>
               </v-row>

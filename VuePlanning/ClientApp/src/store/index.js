@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { HubConnectionState } from "@microsoft/signalr";
 import { CreateRoom, JoinRoom, CardSelect, SendMessage, Disconnect } from "@/services/HubService";
 
 Vue.use(Vuex);
 const AVATAR_API = connectionId => `https://api.adorable.io/avatars/86/${connectionId}.png`;
 const initialState = {
+  connectionState: HubConnectionState.Disconnected,
   user: null,
   room: {
     id: -1,
@@ -16,7 +18,11 @@ const initialState = {
 let store = new Vuex.Store({
   state: initialState,
   mutations: {
+    SET_CONNECTION_STATE(state, connectionState) {
+      state.connectionState = connectionState;
+    },
     SET_USER(state, user) {
+      user.state = HubConnectionState.Disconnected;
       state.user = user;
     },
     SET_MESSAGE(state, message) {
@@ -29,7 +35,7 @@ let store = new Vuex.Store({
     UPDATE_ROOM(state, { users }) {
       users.forEach(u => {
         u.avatar = AVATAR_API(u.connectionId);
-        u.state = "Connected";
+        u.state = HubConnectionState.Connected;
       });
       state.room.users = users;
     },
@@ -42,10 +48,10 @@ let store = new Vuex.Store({
       if (match) {
         match.connectionId = user.connectionId;
         match.avatar = AVATAR_API(user.connectionId);
-        match.state = "Connected";
+        match.state = HubConnectionState.Connected;
       } else {
         user.avatar = AVATAR_API(user.connectionId);
-        user.state = "Connected";
+        user.state = HubConnectionState.Connected;
         state.room.users.push(user);
       }
     },
@@ -62,7 +68,7 @@ let store = new Vuex.Store({
     },
     USER_DISCONNECTED(state, connectionId) {
       var user = state.room.users.find(u => u.connectionId == connectionId);
-      user.state = "Disconnected";
+      user.state = HubConnectionState.Disconnected;
     }
   },
   actions: {
@@ -112,6 +118,9 @@ let store = new Vuex.Store({
     },
     UserDisconnected({ commit }, connectionId) {
       commit("USER_DISCONNECTED", connectionId);
+    },
+    SetConnectionState({ commit }, connectionState) {
+      commit("SET_CONNECTION_STATE", connectionState);
     }
   },
   modules: {}

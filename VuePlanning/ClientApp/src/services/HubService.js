@@ -2,6 +2,10 @@
 import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 import store from "@/store/index";
 
+function _setConnectionState(state) {
+  store.dispatch("SetConnectionState", state);
+}
+
 const connection = new HubConnectionBuilder()
   .withUrl("/PlanningHub")
   .withHubProtocol(new MessagePackHubProtocol())
@@ -17,21 +21,25 @@ connection.on("SendMessage", SetMessage);
 connection.on("UserDisconnected", UserDisconnected);
 
 export async function start() {
+  if (connection.state !== HubConnectionState.Disconnected) return;
   try {
     await connection.start();
     console.log("connected");
+    _setConnectionState(HubConnectionState.Connected);
   } catch (err) {
     console.log("start error", err);
-    //setTimeout(() => start(), 5000);
+    setTimeout(() => start(), 5000);
   }
 }
 
-//connection.onclose(async () => {
-//  await start();
-//});
+connection.onreconnecting(() => {
+  _setConnectionState(HubConnectionState.Reconnecting);
+});
+connection.onclose(() => {
+  _setConnectionState(HubConnectionState.Disconnected);
+});
 
 export function onFocus() {
-  if (connection.state !== HubConnectionState.Disconnected) return;
   start().then(() => {
     const user = store.state.user;
     if (user.isHost) {
