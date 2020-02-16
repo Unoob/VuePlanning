@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import { CreateRoom, JoinRoom, CardSelect, SendMessage, Disconnect } from "@/services/HubService";
 
 Vue.use(Vuex);
-
+const AVATAR_API = connectionId => `https://api.adorable.io/avatars/86/${connectionId}.png`;
 const initialState = {
   user: null,
   room: {
@@ -27,7 +27,10 @@ let store = new Vuex.Store({
       state.user.vote = vote + "";
     },
     UPDATE_ROOM(state, { users }) {
-      users.forEach(u => (u.avatar = `https://api.adorable.io/avatars/86/${u.connectionId}.png`));
+      users.forEach(u => {
+        u.avatar = AVATAR_API(u.connectionId);
+        u.state = "Connected";
+      });
       state.room.users = users;
     },
     SET_HOST(state, user) {
@@ -38,9 +41,11 @@ let store = new Vuex.Store({
       var match = state.room.users.find(f => f.name === user.name);
       if (match) {
         match.connectionId = user.connectionId;
-        match.avatar = `https://api.adorable.io/avatars/86/${user.connectionId}.png`;
+        match.avatar = AVATAR_API(user.connectionId);
+        match.state = "Connected";
       } else {
-        user.avatar = `https://api.adorable.io/avatars/86/${user.connectionId}.png`;
+        user.avatar = AVATAR_API(user.connectionId);
+        user.state = "Connected";
         state.room.users.push(user);
       }
     },
@@ -54,6 +59,10 @@ let store = new Vuex.Store({
     },
     RESET_VOTES(state) {
       state.room.users.forEach(u => (u.vote = null));
+    },
+    USER_DISCONNECTED(state, connectionId) {
+      var user = state.room.users.find(u => u.connectionId == connectionId);
+      user.state = "Disconnected";
     }
   },
   actions: {
@@ -100,6 +109,9 @@ let store = new Vuex.Store({
     RemoveUser({ commit }, user) {
       Disconnect(user);
       commit("USER_LEAVES", user);
+    },
+    UserDisconnected({ commit }, connectionId) {
+      commit("USER_DISCONNECTED", connectionId);
     }
   },
   modules: {}

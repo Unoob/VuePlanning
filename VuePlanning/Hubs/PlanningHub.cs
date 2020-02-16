@@ -15,6 +15,7 @@ namespace VuePlanning.Hubs
         Task UserUpdate(User user);
         Task SendMessage(string msg);
         Task UserLeaves(User user);
+        Task UserDisconnected(string connectionId);
     }
     public class PlanningHub : HubWithPresence<IPlanningHub>
     {
@@ -82,6 +83,11 @@ namespace VuePlanning.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            var room = _rooms.GetUserRoom(Context.ConnectionId);
+            if (room.HasHost)
+            {
+                await Clients.Client(room.Host.ConnectionId).UserDisconnected(Context.ConnectionId);
+            }
             await base.OnDisconnectedAsync(exception);
         }
 

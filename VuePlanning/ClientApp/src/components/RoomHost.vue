@@ -19,7 +19,20 @@
     </v-row>
     <v-row>
       <v-col lg="3" md="4" cols="6" v-for="user in users" :key="user.connectionId">
-        <v-card height="250" :color="show ? 'success lighten-3' : 'primary'" :dark="!show">
+        <v-card
+          :loading="UserState(user.state)"
+          height="250"
+          :color="show ? 'success lighten-3' : 'primary'"
+          :dark="!show"
+        >
+          <template v-slot:progress>
+            <v-progress-linear
+              background-color="warning"
+              height="6"
+              indeterminate
+              color="success"
+            ></v-progress-linear>
+          </template>
           <v-scroll-x-transition>
             <div v-if="!show">
               <v-card-title class="pb-0 justify-end">
@@ -62,6 +75,7 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import { HubConnectionState } from "@microsoft/signalr";
 export default {
   name: "Host",
   mounted: function() {
@@ -79,6 +93,9 @@ export default {
     Send() {
       this.show = false;
       this.SendMessage(this.message);
+    },
+    UserState(state) {
+      return state == HubConnectionState.Disconnected;
     }
   }
 };

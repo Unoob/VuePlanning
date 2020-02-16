@@ -14,6 +14,7 @@ connection.on("UserVote", UserVote);
 connection.on("UserLeaves", UserLeaves);
 connection.on("RoomCreated", RoomCreated);
 connection.on("SendMessage", SetMessage);
+connection.on("UserDisconnected", UserDisconnected);
 
 export async function start() {
   try {
@@ -39,6 +40,10 @@ export function onFocus() {
       store.dispatch("JoinRoom", user);
     }
   });
+}
+
+function UserDisconnected(connectionId) {
+  store.dispatch("UserDisconnected", connectionId);
 }
 
 function UserUpdate(user) {

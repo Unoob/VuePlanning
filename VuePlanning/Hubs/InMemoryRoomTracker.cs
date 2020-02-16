@@ -10,15 +10,13 @@ namespace VuePlanning.Hubs
     public interface IRoomTracker
     {
         Room GetRoom(string id);
-        string GetUserConnectionId(string name);
         Room CreateRoom(string room);
-        void OnConnect(string connectionId, string name);
+        Room GetUserRoom(string connectionId);
     }
 
     public class InMemoryRoomTracker : IRoomTracker
     {
         private readonly ConcurrentDictionary<string, Room> _rooms = new ConcurrentDictionary<string, Room>();
-        private readonly ConcurrentDictionary<string, string> _users = new ConcurrentDictionary<string, string>();
 
         public Room CreateRoom(string roomId)
         {
@@ -39,18 +37,10 @@ namespace VuePlanning.Hubs
             return CreateRoom(id);
         }
 
-        public string GetUserConnectionId(string name)
+        public Room GetUserRoom(string connectionId)
         {
-            if (_users.TryGetValue(name, out string connectionId))
-            {
-                return connectionId;
-            }
-            return null;
-        }
-
-        public void OnConnect(string connectionId, string name)
-        {
-            _users.TryAdd(name, connectionId);
+            return _rooms.Where(w => w.Value.Users.Any(x => x.ConnectionId == connectionId))
+                .Select(s => s.Value).FirstOrDefault() ?? new Room();
         }
     }
 }

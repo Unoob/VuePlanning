@@ -7,7 +7,12 @@
         prepend-icon="fa-user-circle"
         type="text"
       />
-      <v-text-field v-model.trim="room" :label="$t('login.room')" :prepend-icon="roomIcon" type="text" />
+      <v-text-field
+        v-model.trim="room"
+        :label="$t('login.room')"
+        :prepend-icon="roomIcon"
+        type="text"
+      />
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
