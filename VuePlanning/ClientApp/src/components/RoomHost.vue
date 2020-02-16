@@ -52,7 +52,11 @@
                       <v-img :src="user.avatar"></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="12" class="headline font-weight-bold" :style="{ color: user.vote ? '' : 'gold' }">
+                  <v-col
+                    cols="12"
+                    class="headline font-weight-bold"
+                    :style="{ color: user.vote ? '' : 'gold' }"
+                  >
                     {{ user.name }}
                   </v-col>
                 </v-row>

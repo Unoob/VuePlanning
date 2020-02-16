@@ -15,9 +15,9 @@
   </v-content>
 </template>
 <script>
-  import { HubConnectionState } from "@microsoft/signalr"
+import { HubConnectionState } from "@microsoft/signalr";
 import { onFocus, start } from "@/services/HubService";
-  import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "MasterView",
   beforeRouteEnter: function(to, from, next) {
@@ -29,21 +29,25 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("focus", onFocus);
     });
-    },
-    computed: {
-      ...mapState(["user", "connectionState"]),
-      HeartColor() {
-        let color=""
-        switch (this.connectionState) {
-          case HubConnectionState.Connected: color = "pink"; break;
-          case HubConnectionState.Reconnecting: color = "orange"; break;
-        }
-        return `${color} accent-3`;
-      },
-      IsConnected() {
-        return this.connectionState === HubConnectionState.Connected;
+  },
+  computed: {
+    ...mapState(["user", "connectionState"]),
+    HeartColor() {
+      let color = "";
+      switch (this.connectionState) {
+        case HubConnectionState.Connected:
+          color = "pink";
+          break;
+        case HubConnectionState.Reconnecting:
+          color = "orange";
+          break;
       }
+      return `${color} accent-3`;
     },
+    IsConnected() {
+      return this.connectionState === HubConnectionState.Connected;
+    }
+  },
   methods: {
     ...mapActions(["LeaveRoom"]),
     SignOut() {
