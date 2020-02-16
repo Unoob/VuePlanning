@@ -2,12 +2,12 @@
   <v-card :elevation="3" :loading="loading" :disabled="loading">
     <v-card-text>
       <v-text-field
-        v-model="name"
+        v-model.trim="name"
         :label="$t('login.name')"
         prepend-icon="fa-user-circle"
         type="text"
       />
-      <v-text-field v-model="room" :label="$t('login.room')" :prepend-icon="roomIcon" type="text" />
+      <v-text-field v-model.trim="room" :label="$t('login.room')" :prepend-icon="roomIcon" type="text" />
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
