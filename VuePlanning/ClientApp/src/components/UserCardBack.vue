@@ -1,0 +1,41 @@
+<template>
+  <div>
+    <v-card-title class="pb-0 justify-end">
+      <v-tooltip left>
+        <template v-slot:activator="{ on }">
+          <v-btn @click="$emit('remove', user)" icon v-on="on">
+            <v-icon>fas fa-times</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ $t("room.remove") }}</span>
+      </v-tooltip>
+    </v-card-title>
+    <v-container class="text-capitalize text-center">
+      <v-row>
+        <v-col cols="12" class="">
+          <v-avatar color="primary" size="86">
+            <v-img :src="user.avatar"></v-img>
+          </v-avatar>
+        </v-col>
+        <v-col
+          cols="12"
+          class="headline font-weight-bold"
+          :style="{ color: user.vote ? '' : 'gold' }"
+        >
+          {{ user.name }}
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+</template>
+<script>
+export default {
+  name: "UserCardBack",
+  props: {
+    user: {
+      type: Object,
+      default: () => ({})
+    }
+  }
+};
+</script>
