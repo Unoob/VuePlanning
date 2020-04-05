@@ -19,6 +19,7 @@ connection.on("UserLeaves", UserLeaves);
 connection.on("RoomCreated", RoomCreated);
 connection.on("SendMessage", SetMessage);
 connection.on("UserDisconnected", UserDisconnected);
+connection.on("ChangeRoomUserState", ChangeRoomUserState);
 
 export async function start() {
   if (connection.state !== HubConnectionState.Disconnected) return Promise.reject(connection.state);
@@ -81,6 +82,14 @@ function UserLeaves(user) {
 
 function UserVote(user) {
   store.dispatch("UserVote", user);
+}
+
+function ChangeRoomUserState(user) {
+  store.dispatch("SetRoomUserState", user);
+}
+
+export function ChangeUserState(user) {
+  connection.invoke("ChangeUserState", user);
 }
 
 export function SendMessage(roomId, msg) {

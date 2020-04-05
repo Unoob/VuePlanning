@@ -1,7 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { HubConnectionState } from "@microsoft/signalr";
-import { CreateRoom, JoinRoom, CardSelect, SendMessage, Disconnect } from "@/services/HubService";
+import {
+  CreateRoom,
+  JoinRoom,
+  CardSelect,
+  SendMessage,
+  Disconnect,
+  ChangeUserState
+} from "@/services/HubService";
 
 Vue.use(Vuex);
 const AVATAR_API = connectionId => `https://api.adorable.io/avatars/86/${connectionId}.png`;
@@ -17,13 +24,15 @@ const initialState = {
 };
 let store = new Vuex.Store({
   state: initialState,
+  getters: {
+    votes: state => state.room.users.filter(f => f.vote).length
+  },
   mutations: {
     SET_CONNECTION_STATE(state, connectionState) {
       state.connectionState = connectionState;
     },
     SET_USER(state, user) {
-      user.state = HubConnectionState.Disconnected;
-      state.user = user;
+      state.user = { ...user, userState: 2, state: HubConnectionState.Disconnected };
     },
     SET_MESSAGE(state, message) {
       state.room.message = message;
@@ -67,8 +76,15 @@ let store = new Vuex.Store({
       state.room.users.forEach(u => (u.vote = null));
     },
     USER_DISCONNECTED(state, connectionId) {
-      var user = state.room.users.find(u => u.connectionId == connectionId);
+      let user = state.room.users.find(u => u.connectionId === connectionId);
       user.state = HubConnectionState.Disconnected;
+    },
+    SET_USER_STATE(state, userState) {
+      state.user.userState = userState;
+    },
+    SET_USERS_STATE(state, user) {
+      let match = state.room.users.find(u => u.connectionId === user.connectionId);
+      match.userState = user.userState;
     }
   },
   actions: {
@@ -122,6 +138,13 @@ let store = new Vuex.Store({
     },
     SetConnectionState({ commit }, connectionState) {
       commit("SET_CONNECTION_STATE", connectionState);
+    },
+    SetUserState({ commit, state }, userState) {
+      commit("SET_USER_STATE", userState);
+      ChangeUserState(state.user);
+    },
+    SetRoomUserState({ commit }, user) {
+      commit("SET_USERS_STATE", user);
     }
   },
   modules: {}

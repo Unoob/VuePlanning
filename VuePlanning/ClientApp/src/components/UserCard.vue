@@ -2,8 +2,8 @@
   <v-card
     :loading="UserState(user.state)"
     height="250"
-    :color="show ? 'success lighten-3' : 'primary'"
-    :dark="!show"
+    :color="flip ? 'success lighten-3' : 'primary'"
+    :dark="!flip"
   >
     <template v-slot:progress>
       <v-progress-linear
@@ -15,8 +15,8 @@
     </template>
     <transition name="fade" mode="out-in">
       <keep-alive>
-        <UserCardBack v-if="!show" :user="user" @remove="RemoveUser"></UserCardBack>
-        <UserCardFront v-if="show" :user="user"></UserCardFront>
+        <UserCardBack v-if="!flip" :user="user" @remove="RemoveUser"></UserCardBack>
+        <UserCardFront v-if="flip" :user="user"></UserCardFront>
       </keep-alive>
     </transition>
   </v-card>
@@ -32,6 +32,11 @@ export default {
   props: {
     user: { type: Object, default: () => ({}) },
     show: { type: Boolean, default: false }
+  },
+  computed: {
+    flip() {
+      return this.show && this.user.userState === 2;
+    }
   },
   methods: {
     ...mapActions(["RemoveUser"]),

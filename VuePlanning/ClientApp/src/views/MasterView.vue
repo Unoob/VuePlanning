@@ -9,6 +9,9 @@
       <v-btn v-else icon @click="start">
         <v-icon>fas fa-sync</v-icon>
       </v-btn>
+      <v-btn v-if="!user.isHost" icon @click="SetState">
+        <v-icon>far {{ UserState }}</v-icon>
+      </v-btn>
       <v-btn icon @click="SignOut"><v-icon>fas fa-sign-out-alt</v-icon></v-btn>
     </v-toolbar>
     <router-view></router-view>
@@ -18,6 +21,10 @@
 import { HubConnectionState } from "@microsoft/signalr";
 import { onFocus, start } from "@/services/HubService";
 import { mapActions, mapState } from "vuex";
+const UserState = {
+  AWAY: 1,
+  AVAILABLE: 2
+};
 export default {
   name: "MasterView",
   beforeRouteEnter: function(to, from, next) {
@@ -52,15 +59,25 @@ export default {
       }
       return `${color} accent-3`;
     },
+    UserState() {
+      return this.user.userState === UserState.AWAY ? "fa-play-circle" : "fa-pause-circle";
+    },
     IsConnected() {
       return this.connectionState === HubConnectionState.Connected;
     }
   },
   methods: {
-    ...mapActions(["LeaveRoom"]),
+    ...mapActions(["LeaveRoom", "SetUserState"]),
     SignOut() {
       this.LeaveRoom();
       this.$router.push({ name: "login" });
+    },
+    SetState() {
+      let userState = UserState.AWAY;
+      if (this.user.userState === UserState.AWAY) {
+        userState = UserState.AVAILABLE;
+      }
+      this.SetUserState(userState);
     }
   },
   destroyed: function() {

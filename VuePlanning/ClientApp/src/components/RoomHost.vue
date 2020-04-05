@@ -8,12 +8,15 @@
           clearable
           clear-icon="fas fa-times"
           :label="$t('room.task')"
+          @keyup.enter="Send"
         ></v-text-field>
       </v-col>
       <v-col cols="12" class="text-center">
         <v-row justify="space-around">
           <v-btn @click="Send" color="primary">{{ $t("room.send") }}</v-btn>
-          <v-btn @click="show = !show" color="success">{{ $t("room.check") }}</v-btn>
+          <v-btn @click="show = !show" color="success"
+            >{{ $t("room.check") }} {{ votes }}/{{ users.length }}</v-btn
+          >
         </v-row>
       </v-col>
     </v-row>
@@ -25,7 +28,7 @@
   </v-container>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import UserCard from "./UserCard";
 export default {
   name: "Host",
@@ -37,9 +40,12 @@ export default {
   data() {
     return { message: "", show: false };
   },
-  computed: mapState({
-    users: state => state.room.users
-  }),
+  computed: {
+    ...mapState({
+      users: state => state.room.users
+    }),
+    ...mapGetters(["votes"])
+  },
   methods: {
     ...mapActions(["CreateRoom", "SendMessage"]),
     Send() {

@@ -15,5 +15,7 @@ namespace VuePlanning.Models
         public string RoomId { get; set; }
         [Key("vote")]
         public string Vote { get; set; }
+        [Key("userState")]
+        public int UserState { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace VuePlanning.Models
             var userUpdate = Users.Find(w => w.ConnectionId == user.ConnectionId);
             if (userUpdate == null) return;
             userUpdate.Vote = user.Vote;
+            userUpdate.UserState = user.UserState;
         }
 
         internal void UserJoin(User user)

@@ -16,6 +16,7 @@ namespace VuePlanning.Hubs
         Task SendMessage(string msg);
         Task UserLeaves(User user);
         Task UserDisconnected(string connectionId);
+        Task ChangeRoomUserState(User user);
     }
     public class PlanningHub : HubWithPresence<IPlanningHub>
     {
@@ -69,6 +70,16 @@ namespace VuePlanning.Hubs
             await Clients.OthersInGroup(roomId).SendMessage(msg);
         }
 
+        public async Task ChangeUserState(User user)
+        {
+            if (user == null) return;
+            var room = _rooms.GetRoom(user.RoomId);
+            room.UpdateUser(user);
+            if (room.HasHost)
+            {
+                await Clients.Client(room.Host.ConnectionId).ChangeRoomUserState(user);
+            }
+        }
         public async Task Disconnect(User user)
         {
             if (user == null) return;

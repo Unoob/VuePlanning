@@ -18,11 +18,7 @@
             <v-img :src="user.avatar"></v-img>
           </v-avatar>
         </v-col>
-        <v-col
-          cols="12"
-          class="headline font-weight-bold"
-          :style="{ color: user.vote ? '' : 'gold' }"
-        >
+        <v-col cols="12" class="headline font-weight-bold" :style="styles">
           {{ user.name }}
         </v-col>
       </v-row>
@@ -36,6 +32,15 @@ export default {
     user: {
       type: Object,
       default: () => ({})
+    }
+  },
+  computed: {
+    styles() {
+      const { vote, userState } = this.user;
+      return {
+        color: vote ? "" : "gold",
+        textDecoration: userState === 1 ? "line-through" : ""
+      };
     }
   }
 };
