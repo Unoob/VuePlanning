@@ -22,7 +22,15 @@ export default {
   name: "MasterView",
   beforeRouteEnter: function(to, from, next) {
     console.log("mv before route enter");
-    start().then(() => next());
+    start().then(
+      () => next(),
+      state => {
+        if (state !== HubConnectionState.Disconnected) {
+          next();
+        }
+        console.log("Current connection", state);
+      }
+    );
   },
   mounted: function() {
     console.log("mv mounted");
