@@ -3,7 +3,11 @@
     <v-container class="fill-height justify-center">
       <v-row class="text-center">
         <v-col cols="12" class="display-4 font-weight-bold"> {{ user.vote }} </v-col>
-        <v-col cols="12" class="display-1" v-show="hover">{{ user.name }}</v-col>
+        <transition name="fade" mode="out-in">
+          <v-col cols="12" class="display-1 transition-fast-in-fast-out" v-if="hover">
+            {{ user.name }}
+          </v-col>
+        </transition>
       </v-row>
     </v-container>
   </v-hover>

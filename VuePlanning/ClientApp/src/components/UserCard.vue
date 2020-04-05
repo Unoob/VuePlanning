@@ -13,13 +13,12 @@
         color="success"
       ></v-progress-linear>
     </template>
-
-    <v-scroll-x-transition>
-      <UserCardBack v-if="!show" :user="user" @remove="RemoveUser"></UserCardBack>
-    </v-scroll-x-transition>
-    <v-scroll-x-transition>
-      <UserCardFront v-if="show" :user="user"></UserCardFront>
-    </v-scroll-x-transition>
+    <transition name="fade" mode="out-in">
+      <keep-alive>
+        <UserCardBack v-if="!show" :user="user" @remove="RemoveUser"></UserCardBack>
+        <UserCardFront v-if="show" :user="user"></UserCardFront>
+      </keep-alive>
+    </transition>
   </v-card>
 </template>
 <script>

@@ -21,11 +21,12 @@ connection.on("SendMessage", SetMessage);
 connection.on("UserDisconnected", UserDisconnected);
 
 export async function start() {
-  if (connection.state !== HubConnectionState.Disconnected) return;
+  if (connection.state !== HubConnectionState.Disconnected) return Promise.reject(connection.state);
   try {
-    await connection.start();
+    const promise = await connection.start();
     console.log("connected");
     _setConnectionState(HubConnectionState.Connected);
+    return promise;
   } catch (err) {
     console.log("start error", err);
     setTimeout(() => start(), 5000);
@@ -40,14 +41,19 @@ connection.onclose(() => {
 });
 
 export function onFocus() {
-  start().then(() => {
-    const user = store.state.user;
-    if (user.isHost) {
-      connection.invoke("CreateRoom", user);
-    } else {
-      store.dispatch("JoinRoom", user);
+  start().then(
+    () => {
+      const user = store.state.user;
+      if (user.isHost) {
+        connection.invoke("CreateRoom", user);
+      } else {
+        store.dispatch("JoinRoom", user);
+      }
+    },
+    connectionState => {
+      console.log("Current state:", connectionState);
     }
-  });
+  );
 }
 
 function UserDisconnected(connectionId) {
@@ -66,7 +72,6 @@ function SetMessage(msg) {
 }
 
 function UserJoin(user) {
-  console.log("UserJoin", user);
   store.dispatch("UserJoin", user);
 }
 

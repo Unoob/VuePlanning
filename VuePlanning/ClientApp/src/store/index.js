@@ -109,8 +109,9 @@ let store = new Vuex.Store({
       CardSelect(state.user);
     },
     LeaveRoom({ state, commit }) {
+      console.log(state);
       Disconnect(state.user);
-      commit("SET_USER", null);
+      commit("SET_USER", {});
     },
     RemoveUser({ commit }, user) {
       Disconnect(user);
