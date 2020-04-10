@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      cards: ["1/2"].concat(this.fib(9))
+      cards: ["½"].concat(this.fib(9))
     };
   },
   computed: mapState({

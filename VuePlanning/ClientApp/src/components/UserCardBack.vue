@@ -38,7 +38,7 @@ export default {
     styles() {
       const { vote, userState } = this.user;
       return {
-        color: vote ? "" : "gold",
+        color: vote ? "white" : "gold",
         textDecoration: userState === 1 ? "line-through" : ""
       };
     }
