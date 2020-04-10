@@ -45,11 +45,19 @@ namespace VuePlanning.Hubs
             if (host == null) return;
             host.ConnectionId = Context.ConnectionId;
             var room = _rooms.GetRoom(host.RoomId);
-            room.Host = host;
+            if (room.HasHost && room.Host.Name != host.Name) // pokoj juz istnieje z hostem i nie zastępujemy tylko dołączamy użytkownika
+            {
+                host.IsHost = false;
+                await JoinRoom(host);
+            }
+            else
+            {
+                room.Host = host;
 
-            await Groups.AddToGroupAsync(host.ConnectionId, room.Id);
-            await Clients.Caller.UserUpdate(host);
-            await Clients.Caller.RoomCreated(room);
+                await Groups.AddToGroupAsync(host.ConnectionId, room.Id);
+                await Clients.Caller.UserUpdate(host);
+                await Clients.Caller.RoomCreated(room);
+            }
         }
 
         public async Task CardSelect(User user)

@@ -1,8 +1,9 @@
 ﻿<template>
   <v-content>
     <v-toolbar color="primary" dark>
-      <v-toolbar-title> {{ $t("toolbarTitle") }}: {{ user.roomId }} </v-toolbar-title>
+      <v-toolbar-title> {{ $t("toolbarTitle") }}: {{ user.roomId }}</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-toolbar-title> <i>{{user.name}}</i> </v-toolbar-title>
       <v-btn v-if="IsConnected" icon :color="HeartColor">
         <v-icon>fas fa-heart</v-icon>
       </v-btn>
