@@ -17,15 +17,16 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: npm install and build
-      run: |
-        npm --prefix ClientApp/ install
-        npm --prefix ClientApp/ run build --if-present
     
     - name: Install dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+
+    - name: npm install and build
+      run: |
+        npm --prefix ClientApp/ install
+        npm --prefix ClientApp/ run build --if-present
 
     - name: List output files
       run: ls
