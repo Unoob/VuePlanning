@@ -23,9 +23,6 @@ jobs:
     - name: Build
       run: dotnet build --configuration Debug --no-restore
 
-    - name: List output files
-      run: ls
-
     - name: npm install and build
       run: |
         npm --prefix VuePlanning/ClientApp/ install
@@ -40,4 +37,4 @@ jobs:
         ftp-server: ${{ secrets.FTP_URL }}
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASS }}
-        local-dir: build
+        local-dir: wwwroot
