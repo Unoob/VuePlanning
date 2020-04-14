@@ -28,8 +28,8 @@ jobs:
 
     - name: npm install and build
       run: |
-        npm --prefix ClientApp/ install
-        npm --prefix ClientApp/ run build --if-present
+        npm --prefix VuePlanning/ClientApp/ install
+        npm --prefix VuePlanning/ClientApp/ run build --if-present
 
     - name: List output files
       run: ls
