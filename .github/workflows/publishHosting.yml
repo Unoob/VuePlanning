@@ -23,8 +23,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: npm install and build
       run: |
-        npm install
-        npm run build --if-present
+        npm --prefix /ClientApp/ install
+        npm --prefix /ClientApp/ run build --if-present
     - name: List output files
       run: ls
       
