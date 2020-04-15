@@ -33,7 +33,7 @@ jobs:
         dotnet publish -c Release -o publish 
 
     - name: List output files
-      run: ls -lR
+      run: ls -lR ./publish/
 
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@3.0.0
@@ -41,5 +41,5 @@ jobs:
         ftp-server: ${{ secrets.FTP_URL }}
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASS }}
-        local-dir: VuePlanning/publish/
+        local-dir: ./publish/
         git-ftp-args: --insecure --all
