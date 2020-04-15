@@ -50,7 +50,7 @@ namespace VuePlanning.Hubs
                 host.IsHost = false;
                 await JoinRoom(host);
             }
-            else
+            else // nie istnieje pokój - można stworzyć
             {
                 room.Host = host;
 
