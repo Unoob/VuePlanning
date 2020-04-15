@@ -27,18 +27,19 @@ jobs:
       run: |
         npm --prefix VuePlanning/ClientApp/ install
         npm --prefix VuePlanning/ClientApp/ run build --if-present
-
-    - name: List output files
-      run: ls -lR
-    
+   
     - name: dotnet publish
       run: |
         dotnet publish -c Release -o publish 
-      
+
+    - name: List output files
+      run: ls -lR
+
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@3.0.0
       with:
         ftp-server: ${{ secrets.FTP_URL }}
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASS }}
-        local-dir: publish
+        local-dir: VuePlanning/publish/
+        git-ftp-args: --insecure --all
