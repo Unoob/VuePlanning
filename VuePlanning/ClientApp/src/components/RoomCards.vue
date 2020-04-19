@@ -1,11 +1,14 @@
 ﻿<template>
   <v-container>
-    <v-row><v-textarea :value="message" rows="1" readonly outlined auto-grow></v-textarea></v-row>
     <v-row>
-      <v-col lg="3" md="4" cols="6" v-for="card in cards" :key="card">
+      <v-textarea :value="message" rows="1" readonly outlined auto-grow></v-textarea>
+      <NotificationSwitch></NotificationSwitch>
+    </v-row>
+    <v-row>
+      <v-col v-for="card in cards" :key="card" lg="3" md="4" cols="6">
         <v-card
-          @click="CardSelect(card)"
           :color="`${selected == card ? 'green' : 'grey lighten-3'}`"
+          @click="CardSelect(card)"
         >
           <v-card-text class="text-center headline">{{ card }}</v-card-text>
         </v-card>
@@ -15,12 +18,10 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import NotificationSwitch from "./NotificationSettings";
 export default {
   name: "Cards",
-  mounted: function() {
-    console.log("card mounted");
-    this.JoinRoom();
-  },
+  components: { NotificationSwitch },
   data() {
     return {
       cards: ["½"].concat(this.fib(9))
@@ -30,6 +31,10 @@ export default {
     message: state => state.room.message,
     selected: state => state.user.vote
   }),
+  mounted: function() {
+    console.log("card mounted");
+    this.JoinRoom();
+  },
   methods: {
     ...mapActions(["JoinRoom", "CardSelect"]),
     fib(n) {

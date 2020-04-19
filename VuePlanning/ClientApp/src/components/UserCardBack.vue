@@ -3,7 +3,7 @@
     <v-card-title class="pb-0 justify-end">
       <v-tooltip left>
         <template v-slot:activator="{ on }">
-          <v-btn @click="$emit('remove', user)" icon v-on="on">
+          <v-btn icon @click="$emit('remove', user)" v-on="on">
             <v-icon>fas fa-times</v-icon>
           </v-btn>
         </template>

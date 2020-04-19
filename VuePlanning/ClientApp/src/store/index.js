@@ -7,7 +7,8 @@ import {
   CardSelect,
   SendMessage,
   Disconnect,
-  ChangeUserState
+  ChangeUserState,
+  SaveUserSubscription
 } from "@/services/HubService";
 
 Vue.use(Vuex);
@@ -145,6 +146,10 @@ let store = new Vuex.Store({
     },
     SetRoomUserState({ commit }, user) {
       commit("SET_USERS_STATE", user);
+    },
+    SaveSubscription({ state }, subscription) {
+      const { user } = state;
+      SaveUserSubscription({ ...user, subscription: JSON.parse(JSON.stringify(subscription)) });
     }
   },
   modules: {}

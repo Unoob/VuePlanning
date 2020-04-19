@@ -17,5 +17,7 @@ namespace VuePlanning.Models
         public string Vote { get; set; }
         [Key("userState")]
         public int UserState { get; set; }
+        [Key("subscription")]
+        public Subscription Subscription { get; set; }
     }
 }

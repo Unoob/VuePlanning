@@ -16,8 +16,8 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn @click="onConfirm" color="primary">{{ $t("login.confirm") }}</v-btn>
-      <v-btn @click="onCreate" color="primary" outlined>{{ $t("login.create") }}</v-btn>
+      <v-btn color="primary" @click="onConfirm">{{ $t("login.confirm") }}</v-btn>
+      <v-btn color="primary" outlined @click="onCreate">{{ $t("login.create") }}</v-btn>
     </v-card-actions>
   </v-card>
 </template>

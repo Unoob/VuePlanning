@@ -111,3 +111,7 @@ export function CreateRoom(user) {
 export function Disconnect(user) {
   connection.invoke("Disconnect", user);
 }
+
+export function SaveUserSubscription(userSubscription) {
+  connection.invoke("SaveUserSubscription", userSubscription);
+}

@@ -28,6 +28,7 @@ namespace VuePlanning.Models
             if (userUpdate == null) return;
             userUpdate.Vote = user.Vote;
             userUpdate.UserState = user.UserState;
+            userUpdate.Subscription = user.Subscription;
         }
 
         internal void UserJoin(User user)

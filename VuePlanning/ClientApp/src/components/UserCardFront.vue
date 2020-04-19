@@ -4,7 +4,7 @@
       <v-row class="text-center">
         <v-col cols="12" class="display-4 font-weight-bold"> {{ user.vote }} </v-col>
         <transition name="fade" mode="out-in">
-          <v-col cols="12" class="display-1 transition-fast-in-fast-out" v-if="hover">
+          <v-col v-if="hover" cols="12" class="display-1 transition-fast-in-fast-out">
             {{ user.name }}
           </v-col>
         </transition>

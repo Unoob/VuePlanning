@@ -13,15 +13,13 @@
       </v-col>
       <v-col cols="12" class="text-center">
         <v-row justify="space-around">
-          <v-btn @click="Send" color="primary">{{ $t("room.send") }}</v-btn>
-          <v-btn @click="show = !show" color="success"
-            >{{ $t("room.check") }} {{ votes }}/{{ users.length }}</v-btn
-          >
+          <v-btn color="primary" @click="Send">{{ $t("room.send") }}</v-btn>
+          <v-btn color="success" @click="show = !show">{{ $t("room.check") }} {{ votes }}/{{ users.length }}</v-btn>
         </v-row>
       </v-col>
     </v-row>
     <v-row>
-      <v-col lg="3" md="4" cols="6" v-for="user in users" :key="user.connectionId">
+      <v-col v-for="user in users" :key="user.connectionId" lg="3" md="4" cols="6">
         <UserCard :user="user" :show="show"></UserCard>
       </v-col>
     </v-row>
@@ -32,10 +30,6 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import UserCard from "./UserCard";
 export default {
   name: "Host",
-  mounted: function() {
-    console.log("host mounted");
-    this.CreateRoom();
-  },
   components: { UserCard },
   data() {
     return { message: "", show: false };
@@ -45,6 +39,10 @@ export default {
       users: state => state.room.users
     }),
     ...mapGetters(["votes"])
+  },
+  mounted: function() {
+    console.log("host mounted");
+    this.CreateRoom();
   },
   methods: {
     ...mapActions(["CreateRoom", "SendMessage"]),
