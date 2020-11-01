@@ -42,6 +42,9 @@ let store = new Vuex.Store({
     SET_USER_VOTE(state, vote) {
       state.user.vote = vote + "";
     },
+    SET_USER_SUBSCRIPTION(state, subscription) {
+      state.user.subscription = subscription;
+    },
     UPDATE_ROOM(state, { users }) {
       users.forEach(u => {
         u.avatar = AVATAR_API(u.connectionId);
@@ -85,6 +88,7 @@ let store = new Vuex.Store({
     },
     SET_USERS_STATE(state, user) {
       let match = state.room.users.find(u => u.connectionId === user.connectionId);
+      if (!match) return;
       match.userState = user.userState;
     }
   },
@@ -147,9 +151,11 @@ let store = new Vuex.Store({
     SetRoomUserState({ commit }, user) {
       commit("SET_USERS_STATE", user);
     },
-    SaveSubscription({ state }, subscription) {
+    SaveSubscription({ state, commit }, subscription) {
       const { user } = state;
-      SaveUserSubscription({ ...user, subscription: JSON.parse(JSON.stringify(subscription)) });
+      const sub = JSON.parse(JSON.stringify(subscription));
+      commit("SET_USER_SUBSCRIPTION", sub)
+      SaveUserSubscription({ ...user, subscription: sub });
     }
   },
   modules: {}

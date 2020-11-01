@@ -31,9 +31,9 @@ export default {
     if (this.supported) {
       this.registerServiceWorker();
     }
-    this.getNotificationPermissionState().then(
-      permission => (this.confirm = permission === "granted")
-    );
+    // this.getNotificationPermissionState().then(
+    //   permission => (this.confirm = permission === "granted")
+    // );
   },
   methods: {
     ...mapActions(["SaveSubscription"]),
